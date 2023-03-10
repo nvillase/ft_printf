@@ -6,32 +6,36 @@
 /*   By: nvillase <nvillase@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 15:39:17 by nvillase          #+#    #+#             */
-/*   Updated: 2023/03/10 10:41:13 by nvillase         ###   ########.fr       */
+/*   Updated: 2023/03/10 17:27:08 by nvillase         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int	ft_printf(const char *format, ...)
+int	apply_format(va_list arg, char format)
 {
-	va_list	arg;
-	int		i;
-	int		count;
+	int	address;
 
-	va_start(arg, format);
-	i = -1;
-	count = 0;
-	while (format[++i])
+	if (format == 'c')
+		return (ft_putchar(va_arg(arg, int)));
+	if (format == 's')
+		return (ft_putstr(va_arg(arg, char *)));
+	if (format == 'd' || format == 'i')
+		return (ft_putnbr(va_arg(arg, int)));
+	if (format == 'u')
+		return (ft_putnbr(va_arg(arg, unsigned int)));
+	if (format == '%')
+		return (ft_putchar('%'));
+	if (format == 'x' || format == 'X')
+		return (ft_putexxx(va_arg(arg, unsigned long), format));
+	if (format == 'p')
 	{
-		if (format[i] == "%" && format[i + 1])
-		{
-			count += format_check(format[i + 1], arg);
-		}
-		else
-		{
-			write(1, format[i], 1);
-		}
-	}	
+		address = va_arg(arg, unsigned long);
+		if (address <= 0)
+			return (write(1, "(nil)", 5));
+		return (write (1, "0x", 2) + ft_putexxx(address, 'x'));
+	}
+	return (0);
 }
 
 int	format_check(char format, va_list arg)
@@ -49,18 +53,28 @@ int	format_check(char format, va_list arg)
 	return (count);
 }
 
-int	apply_format(va_list arg, char format)
+int	ft_printf(const char *format, ...)
 {
-	if (format == 'c')
-		return (ft_putchar(va_arg(arg, char *)));
-	if (format == 's')
-		return (ft_putstr(va_arg(arg, char *)));
-	if (format == 'd')
-		return (ft_putnbr(va_arg(arg, char *)));
-	if (format == 'u')
-		return (ft_putnbr(va_arg(arg, char *)));
-	if (format == '%')
-		return (write(1, '%', 1), 1);
-	if (format == 'i')
-		return (ft_putnbr(va_arg(arg, char *)));
+	va_list	arg;
+	int		i;
+	int		count;
+
+	va_start(arg, format);
+	i = -1;
+	count = 0;
+	while (format[++i])
+	{
+		if (format[i] == '%' && format[i + 1])
+		{
+			count += format_check(format[i + 1], arg);
+			if (format[i + 1])
+				i++;
+		}
+		else
+		{
+			write(1, &format[i], 1);
+			count++;
+		}
+	}
+	return (count);
 }
