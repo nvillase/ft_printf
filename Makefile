@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: noanvillaseque <noanvillaseque@student.42. +#+  +:+       +#+         #
+#    By: nvillase <nvillase@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/07 14:57:38 by noanvillase       #+#    #+#              #
-#    Updated: 2023/03/07 15:15:27 by noanvillaseque   ###   ########.fr        #
+#    Updated: 2023/03/10 11:06:51 by nvillase         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,8 @@ CCFLAG = -Wall -Wextra -Werror
 RM = rm
 RMFLAG = -f
 
-SRC = 
+SRC = 	ft_printf.c \
+		ft_foction_printf.c
 
 OBJS = $(SRCS:.c=.o)
 
