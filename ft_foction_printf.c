@@ -6,7 +6,7 @@
 /*   By: nvillase <nvillase@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 14:26:50 by nvillase          #+#    #+#             */
-/*   Updated: 2023/03/10 17:14:31 by nvillase         ###   ########.fr       */
+/*   Updated: 2023/03/13 11:51:24 by nvillase         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,6 @@ int	ft_putstr(char *s)
 	return (i);
 }
 
-int	ft_putchar(char c)
-{
-	write(1, &c, 1);
-	return (1);
-}
-
 int	ft_putnbr(int nb)
 {
 	int	count;
@@ -46,6 +40,26 @@ int	ft_putnbr(int nb)
 		nb = -nb;
 		count++;
 	}
+	if (nb >= 10)
+	{
+		ft_putnbr(nb / 10);
+		ft_putnbr(nb % 10);
+	}
+	else
+		ft_putchar(nb + '0');
+	while (nb >= 10)
+	{
+		nb /= 10;
+		count++;
+	}
+	return (count + 1);
+}
+
+int	ft_printnbr(unsigned int nb)
+{
+	int	count;
+
+	count = 0;
 	if (nb >= 10)
 	{
 		ft_putnbr(nb / 10);

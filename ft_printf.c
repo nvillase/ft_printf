@@ -6,15 +6,21 @@
 /*   By: nvillase <nvillase@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 15:39:17 by nvillase          #+#    #+#             */
-/*   Updated: 2023/03/10 17:27:08 by nvillase         ###   ########.fr       */
+/*   Updated: 2023/03/13 11:51:07 by nvillase         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
+int	ft_putchar(char c)
+{
+	write(1, &c, 1);
+	return (1);
+}
+
 int	apply_format(va_list arg, char format)
 {
-	int	address;
+	unsigned long int	address;
 
 	if (format == 'c')
 		return (ft_putchar(va_arg(arg, int)));
@@ -23,17 +29,18 @@ int	apply_format(va_list arg, char format)
 	if (format == 'd' || format == 'i')
 		return (ft_putnbr(va_arg(arg, int)));
 	if (format == 'u')
-		return (ft_putnbr(va_arg(arg, unsigned int)));
+		return (ft_printnbr(va_arg(arg, unsigned int)));
 	if (format == '%')
 		return (ft_putchar('%'));
 	if (format == 'x' || format == 'X')
-		return (ft_putexxx(va_arg(arg, unsigned long), format));
+		return (ft_putexxx(va_arg(arg, unsigned int), format));
 	if (format == 'p')
 	{
-		address = va_arg(arg, unsigned long);
-		if (address <= 0)
+		address = va_arg(arg, unsigned long int);
+		if (address == 0)
 			return (write(1, "(nil)", 5));
-		return (write (1, "0x", 2) + ft_putexxx(address, 'x'));
+		write (1, "0x", 2);
+		return (2 + ft_putexxx(address, 'x'));
 	}
 	return (0);
 }
